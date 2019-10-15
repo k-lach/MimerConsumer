@@ -9,8 +9,12 @@
 	<property name="sevenzip" value="${environment::get-folder-path('ProgramFiles')}\7-zip\7z.exe" />
 	<!-- default build tool is msbuild-->
 	<property name="buildtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" />
+	<!-- default test tool is mstest-->
+	<property name="testtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\Common7\IDE\MSTest.exe" />
 	<!-- default publish dir is 'Release'  -->
-	<property name="publishdir" value="${directory::get-current-directory()}/Release" />
+	<property name="publishdir" value="${directory::get-current-directory()}\Release" />
+	<property name="errorCode" value=""/>
+	<property name="testResult" value=""/>
 
 	<!-- ======================================================================	-->
 	<!-- Configuration target													-->
@@ -24,32 +28,66 @@
 		<delete dir="obj" if="${directory::exists('MimerConsumerConsoleApplication\obj')}" />
 
 		<!-- clean components -->
-		<execcolour program="${buildtool}">
+		<execcolour program="${buildtool}" resultproperty="errorCode">
 			<arg value="MimerConsumerConsoleApplication.sln" />
 			<arg value="/T:MimerConsumerConsoleApplication:Clean"/>
 			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
 			<arg value="/P:Platform=&quot;${platform}&quot;" />
 		</execcolour>
+
+		<echo message="Error Code:=${errorCode}" />
 	</target>
 
 	<!-- target: build -->
 	<target name="build">
 		<!-- Restore nuget -->
-		<execcolour program=".nuget\nuget.exe">
+		<execcolour program=".nuget\nuget.exe" resultproperty="errorCode">
 			<arg value="restore" />
 			<arg value="MimerConsumerConsoleApplication.sln" />
 		</execcolour>
-		<!-- build and create deployment package -->
-		<execcolour program="${buildtool}">
+		<echo message="Error Code:=${errorCode}" />
+
+		<!-- build solution -->
+		<execcolour program="${buildtool}" resultproperty="errorCode">
 			<arg line="MimerConsumerConsoleApplication.sln" />
 			<arg value="/T:MimerConsumerConsoleApplication"/>
 			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
 			<arg value="/P:Platform=&quot;${platform}&quot;" />
 		</execcolour>
+		<echo message="Error Code:=${errorCode}" />
 	</target>
 
-<!-- Create compressed files -->
-	<target name="publish" depends="build">
+	<!-- target: build-test -->
+	<target name="build-test">
+		<!-- Restore nuget -->
+		<!--<execcolour program=".nuget\nuget.exe" resultproperty="errorCode">
+			<arg value="restore" />
+			<arg value="MimerConsumerConsoleApplication.sln" />
+		</execcolour>
+		<echo message="Error Code:=${errorCode}" />-->
+
+		<!-- build solution -->
+		<execcolour program="${buildtool}" resultproperty="errorCode">
+			<arg line="MimerConsumerConsoleApplication.sln" />
+			<arg value="/T:MimerConsumerUnitTestProject"/>
+			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
+			<arg value="/P:Platform=&quot;${platform}&quot;" />
+		</execcolour>
+		<echo message="Error Code:=${errorCode}" />
+	</target>
+
+	<!-- target: run test -->
+	<target name="run-test" depends="build">
+		<execcolour program="${testtool}" resultproperty="testResult">
+			<arg value="/testcontainer:MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
+			<arg value="/noisolation" />
+			<arg value="/resultsfile:testResults.trx" />
+		</execcolour>
+		<echo message="Test Result:=${testResult}" />
+	</target>
+
+	<!-- Create deployment package: self-extracting archives -->
+	<target name="publish" depends="build,run-test">
 		<!-- Save the string fileversion to the "build.version" property -->
 		<script language="C#" prefix="util" >
 			<references><include name="System.dll" /></references>
@@ -72,12 +110,14 @@
 		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release" 
 			program="${sevenzip}"
 			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
+		<echo message="Error Code:=${errorCode}" />
 
 		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release"
 			program="${sevenzip}"
 			commandline="a -r0 &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.pdb.sfx.exe&quot; -mx9 -sfx7z.sfx *.pdb" />
+		<echo message="Error Code:=${errorCode}" />
 	
 	</target>
 
-	<target name="default" depends="clean,build,publish" />
+	<target name="default" depends="clean,build,build-test,run-test,publish" />
 </project>
