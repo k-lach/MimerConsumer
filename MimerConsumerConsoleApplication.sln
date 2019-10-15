@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimerConsumerConsoleApplication", "MimerConsumerConsoleApplication\MimerConsumerConsoleApplication.csproj", "{155B5875-6EA3-43E5-89EB-6741E7DAB46C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimerConsumerUnitTestProject", "MimerConsumerUnitTestProject\MimerConsumerUnitTestProject.csproj", "{11747003-6F11-47DD-AF3C-C90DB6C39E4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimerConsumerLib", "MimerConsumerLib\MimerConsumerLib.csproj", "{A3D54E05-2A14-43A8-BC09-44FBF4278D7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03B09307-DE64-4C4C-9C9D-3B188EEADA21}"
+	ProjectSection(SolutionItems) = preProject
+		Default.build = Default.build
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82F8F1F5-863C-4F84-B884-556084FDF78C}
 	EndGlobalSection
 EndGlobal

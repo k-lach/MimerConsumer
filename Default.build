@@ -1,0 +1,82 @@
+﻿<?xml version="1.0"?>
+<project name="MimerConsumer" default="default">
+	<!-- default configuration is Release -->
+	<property name="configuration" value="Release" />
+	<!-- default build for win32 platform -->
+	<property name="platform" value="Any CPU" />
+	<!-- location of 7-zip-->
+	<property name="sevenzip" value="${environment::get-folder-path('ProgramFiles')}\7-zip\7z.exe" />
+	<!-- default build tool is msbuild-->
+	<property name="buildtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" />
+	<!-- default publish dir is 'Release'  -->
+	<property name="publishdir" value="${directory::get-current-directory()}/Release" />
+
+		<!-- ======================================================================	-->
+	<!-- Configuration target													-->
+	<!-- ====================================================================== -->
+
+	<!-- target: clean -->
+	<target name="clean">
+		<!-- delete publish and output dir -->
+		<delete dir="${publishdir}" if="${directory::exists(publishdir)}" />
+		<delete dir="bin" if="${directory::exists('bin')}" />
+		<delete dir="obj" if="${directory::exists('obj')}" />
+
+		<!-- clean components -->
+		<exec program="${buildtool}">
+			<arg value="MimerConsumerConsoleApplication.sln" />
+			<arg value="/T:MimerConsumerConsoleApplication:Clean"/>
+			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
+			<arg value="/P:Platform=&quot;${platform}&quot;" />
+		</exec>
+	</target>
+
+	<!-- target: build -->
+	<target name="build">
+		<!-- Restore nuget -->
+		<exec program=".nuget\nuget.exe">
+			<arg value="restore" />
+			<arg value="MimerConsumerConsoleApplication.sln" />
+		</exec>
+		<!-- build and create deployment package -->
+		<exec program="${buildtool}">
+			<arg line="MimerConsumerConsoleApplication.sln" />
+			<arg value="/T:MimerConsumerConsoleApplication"/>
+			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
+			<arg value="/P:Platform=&quot;${platform}&quot;" />
+		</exec>
+	</target>
+
+<!-- Create compressed files -->
+	<target name="publish" depends="build">
+		<!-- Save the string fileversion to the "build.version" property -->
+		<script language="C#" prefix="util" >
+			<references><include name="System.dll" /></references>
+			<imports><import namespace="System.Diagnostics" /></imports>
+			<code>
+				<![CDATA[
+				public static void ScriptMain(Project project)
+				{
+					FileVersionInfo info = FileVersionInfo.GetVersionInfo(project.GetFullPath("bin\\Release\\MimerConsumerConsoleApplication.exe"));
+					project.Properties.Add( "build.version", info.FileVersion );
+					project.Properties.Add( "build.revision", info.ProductVersion.Substring(info.ProductVersion.LastIndexOf('+') + 1));
+				}
+				]]>
+			</code>
+		</script>
+		<!-- recreate publish dir -->
+		<mkdir dir="${publishdir}" />
+	
+		<!-- Compress Files-->
+		<exec workingdir="bin\Release" 
+			program="${sevenzip}"
+			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
+
+		<exec workingdir="bin\Release"
+			program="${sevenzip}"
+			commandline="a -r0 &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}.pdb.sfx.exe&quot; -mx9 -sfx7z.sfx *.pdb" />
+	
+	</target>
+
+	<target name="default" depends="clean,build,publish" />
+</project>
