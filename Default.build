@@ -19,8 +19,8 @@
 	<target name="clean">
 		<!-- delete publish and output dir -->
 		<delete dir="${publishdir}" if="${directory::exists(publishdir)}" />
-		<delete dir="bin" if="${directory::exists('bin')}" />
-		<delete dir="obj" if="${directory::exists('obj')}" />
+		<delete dir="bin" if="${directory::exists('MimerConsumerConsoleApplication\bin')}" />
+		<delete dir="obj" if="${directory::exists('MimerConsumerConsoleApplication\obj')}" />
 
 		<!-- clean components -->
 		<exec program="${buildtool}">
@@ -57,7 +57,7 @@
 				<![CDATA[
 				public static void ScriptMain(Project project)
 				{
-					FileVersionInfo info = FileVersionInfo.GetVersionInfo(project.GetFullPath("bin\\Release\\MimerConsumerConsoleApplication.exe"));
+					FileVersionInfo info = FileVersionInfo.GetVersionInfo(project.GetFullPath("MimerConsumerConsoleApplication\\bin\\Release\\MimerConsumerConsoleApplication.exe"));
 					project.Properties.Add( "build.version", info.FileVersion );
 					project.Properties.Add( "build.revision", info.ProductVersion.Substring(info.ProductVersion.LastIndexOf('+') + 1));
 				}
@@ -68,13 +68,13 @@
 		<mkdir dir="${publishdir}" />
 	
 		<!-- Compress Files-->
-		<exec workingdir="bin\Release" 
+		<exec workingdir="MimerConsumerConsoleApplication\bin\Release" 
 			program="${sevenzip}"
-			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
+			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
 
-		<exec workingdir="bin\Release"
+		<exec workingdir="MimerConsumerConsoleApplication\bin\Release"
 			program="${sevenzip}"
-			commandline="a -r0 &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}.pdb.sfx.exe&quot; -mx9 -sfx7z.sfx *.pdb" />
+			commandline="a -r0 &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.pdb.sfx.exe&quot; -mx9 -sfx7z.sfx *.pdb" />
 	
 	</target>
 
