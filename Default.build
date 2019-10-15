@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0"?>
 <project name="MimerConsumer" default="default">
+	<loadtasks assembly="${environment::get-folder-path('ProgramFilesX86')}\nant-0.92\bin\NAntColours.dll"/>
 	<!-- default configuration is Release -->
 	<property name="configuration" value="Release" />
 	<!-- default build for win32 platform -->
@@ -23,28 +24,28 @@
 		<delete dir="obj" if="${directory::exists('MimerConsumerConsoleApplication\obj')}" />
 
 		<!-- clean components -->
-		<exec program="${buildtool}">
+		<execcolour program="${buildtool}">
 			<arg value="MimerConsumerConsoleApplication.sln" />
 			<arg value="/T:MimerConsumerConsoleApplication:Clean"/>
 			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
 			<arg value="/P:Platform=&quot;${platform}&quot;" />
-		</exec>
+		</execcolour>
 	</target>
 
 	<!-- target: build -->
 	<target name="build">
 		<!-- Restore nuget -->
-		<exec program=".nuget\nuget.exe">
+		<execcolour program=".nuget\nuget.exe">
 			<arg value="restore" />
 			<arg value="MimerConsumerConsoleApplication.sln" />
-		</exec>
+		</execcolour>
 		<!-- build and create deployment package -->
-		<exec program="${buildtool}">
+		<execcolour program="${buildtool}">
 			<arg line="MimerConsumerConsoleApplication.sln" />
 			<arg value="/T:MimerConsumerConsoleApplication"/>
 			<arg value="/P:Configuration=&quot;${configuration}&quot;" />
 			<arg value="/P:Platform=&quot;${platform}&quot;" />
-		</exec>
+		</execcolour>
 	</target>
 
 <!-- Create compressed files -->
@@ -68,11 +69,11 @@
 		<mkdir dir="${publishdir}" />
 	
 		<!-- Compress Files-->
-		<exec workingdir="MimerConsumerConsoleApplication\bin\Release" 
+		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release" 
 			program="${sevenzip}"
 			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
 
-		<exec workingdir="MimerConsumerConsoleApplication\bin\Release"
+		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release"
 			program="${sevenzip}"
 			commandline="a -r0 &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.pdb.sfx.exe&quot; -mx9 -sfx7z.sfx *.pdb" />
 	
