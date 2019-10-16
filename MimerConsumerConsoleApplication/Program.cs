@@ -16,6 +16,7 @@ namespace MimerConsumerConsoleApplication
         static Program()
         {
             Consumer = new MimerConsumer()
+
         }
 
         private static void GetAndPrint10LatestArticles()
