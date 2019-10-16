@@ -9,14 +9,15 @@
 	<property name="sevenzip" value="${environment::get-folder-path('ProgramFiles')}\7-zip\7z.exe" />
 	<!-- default build tool is msbuild-->
 	<property name="buildtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" />
-	<!-- default test tool is mstest-->
-	<!--<property name="testtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\Common7\IDE\MSTest.exe" />-->
 	<!-- default test tool is vstest.console.exe-->
 	<property name="testtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" />
 	<!-- default publish dir is 'Release'  -->
 	<property name="publishdir" value="${directory::get-current-directory()}\Release" />
+	<!-- location of test results file -->
 	<property name="testResultsFile" value="${directory::get-current-directory()}\testResults.trx" />
+	<!-- return code from build process -->
 	<property name="errorCode" value=""/>
+	<!-- return code from running the tests -->
 	<property name="testResultCode" value=""/>
 
 	<!-- ======================================================================	-->
@@ -85,8 +86,6 @@
 	<target name="run-test" depends="build">
 		<execcolour program="${testtool}" resultproperty="testResultCode" failonerror="false">
 			<arg value="MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
-			<!--<arg value="/noisolation" />
-			<arg value="/resultsfile:${testResultsFile}" />-->
 			<arg value="/Logger:trx;LogFileName=${testResultsFile}" />
 		</execcolour>
 		<echo message="Test Result return code:=${testResultCode}" />
