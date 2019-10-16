@@ -14,7 +14,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Article> articles = mc.GetNLatestArticles(10);
-            Assert.AreEqual(10, articles.Count, "Did not get the expected count of articles (10)");
+            Assert.AreEqual(11, articles.Count, "Did not get the expected count of articles (10)");
         }
 
         [TestMethod]
