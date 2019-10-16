@@ -15,6 +15,7 @@ namespace MimerConsumerConsoleApplication
 
         static Program()
         {
+
             Consumer = new MimerConsumer()
 
         }
