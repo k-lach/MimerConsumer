@@ -120,7 +120,7 @@
 		<!-- Compress Files-->
 		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release" 
 			program="${sevenzip}"
-			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb -x!*.config" />
+			commandline="a -r &quot;${publishdir}/MimerConsumerConsoleApplication_${build.version}_${build.revision}.sfx.exe&quot; -mx9 -sfx7z.sfx -x!*.pdb" />
 		<echo message="Error Code:=${errorCode}" />
 
 		<execcolour workingdir="MimerConsumerConsoleApplication\bin\Release"
