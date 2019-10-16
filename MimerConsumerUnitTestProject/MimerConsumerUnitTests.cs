@@ -14,7 +14,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Article> articles = mc.GetNLatestArticles(10);
-            Assert.AreEqual(11, articles.Count, "Did not get the expected count of articles (10)");
+            Assert.AreEqual(10, articles.Count, "Did not get the expected count of articles (10)");
         }
 
         [TestMethod]
@@ -22,7 +22,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Article> articles = mc.GetLatestArticles();
-            Assert.AreEqual(21, articles.Count, "Did not get the expected count of articles (20)");
+            Assert.AreEqual(20, articles.Count, "Did not get the expected count of articles (20)");
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Article> articles = mc.GetNLatestArticles(0);
-            Assert.AreEqual(1, articles.Count, "Did not get the expected count of articles (0)");
+            Assert.AreEqual(0, articles.Count, "Did not get the expected count of articles (0)");
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Site> sites = mc.GetSites();
-            Assert.IsTrue(sites.Count == 0, "No sites found");
+            Assert.IsTrue(sites.Count != 0, "No sites found");
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace MimerConsumerUnitTestProject
         {
             MimerConsumer mc = new MimerConsumer();
             List<Site> sites = mc.GetFrontPageEditorsSites();
-            Assert.IsTrue(sites.Count == 0, "No front page editor sites found");
+            Assert.IsTrue(sites.Count != 0, "No front page editor sites found");
         }
     }
 }
