@@ -13,6 +13,7 @@
 	<property name="testtool" value="${environment::get-folder-path('ProgramFilesX86')}\Microsoft Visual Studio\2019\Professional\Common7\IDE\MSTest.exe" />
 	<!-- default publish dir is 'Release'  -->
 	<property name="publishdir" value="${directory::get-current-directory()}\Release" />
+	<property name="testResultsFile" value="${directory::get-current-directory()}\testResults.trx" />
 	<property name="errorCode" value=""/>
 	<property name="testResult" value=""/>
 
@@ -22,6 +23,8 @@
 
 	<!-- target: clean -->
 	<target name="clean">
+		<!-- delete test results file -->
+		<delete file="${testResultsFile}" if="${file::exists(testResultsFile)}" />
 		<!-- delete publish and output dir -->
 		<delete dir="${publishdir}" if="${directory::exists(publishdir)}" />
 		<delete dir="bin" if="${directory::exists('MimerConsumerConsoleApplication\bin')}" />
@@ -81,7 +84,7 @@
 		<execcolour program="${testtool}" resultproperty="testResult">
 			<arg value="/testcontainer:MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
 			<arg value="/noisolation" />
-			<arg value="/resultsfile:testResults.trx" />
+			<arg value="/resultsfile:${testResultsFile}" />
 		</execcolour>
 		<echo message="Test Result:=${testResult}" />
 	</target>
