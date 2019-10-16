@@ -62,14 +62,7 @@
 
 	<!-- target: build-test -->
 	<target name="build-test">
-		<!-- Restore nuget -->
-		<!--<execcolour program=".nuget\nuget.exe" resultproperty="errorCode">
-			<arg value="restore" />
-			<arg value="MimerConsumerConsoleApplication.sln" />
-		</execcolour>
-		<echo message="Error Code:=${errorCode}" />-->
-
-		<!-- build solution -->
+		<!-- build test project -->
 		<execcolour program="${buildtool}" resultproperty="errorCode">
 			<arg line="MimerConsumerConsoleApplication.sln" />
 			<arg value="/T:MimerConsumerUnitTestProject"/>
