@@ -65,11 +65,6 @@
 
 	<!-- target: build-test -->
 	<target name="build-test">
-		<!-- Restore nuget -->
-		<execcolour program=".nuget\nuget.exe" resultproperty="errorCode">
-			<arg value="restore" />
-			<arg value="MimerConsumerConsoleApplication.sln" />
-		</execcolour>
 		<echo message="Error Code:=${errorCode}" />
 		<!-- build test project -->
 		<execcolour program="${buildtool}" resultproperty="errorCode">
@@ -86,6 +81,7 @@
 	<target name="run-test" depends="build">
 		<execcolour program="${testtool}" resultproperty="testResultCode" failonerror="false">
 			<arg value="MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
+			<arg value="/InIsolation" />
 			<arg value="/Logger:trx;LogFileName=${testResultsFile}" />
 		</execcolour>
 		<echo message="Test Result return code:=${testResultCode}" />
