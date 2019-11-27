@@ -44,6 +44,8 @@ namespace MimerConsumerUnitTestProject
         [TestMethod]
         public void TestFrontPageEditorSites()
         {
+			//dummy
+
             MimerConsumer mc = new MimerConsumer();
             List<Site> sites = mc.GetFrontPageEditorsSites();
             Assert.IsTrue(sites.Count != 0, "No front page editor sites found");
