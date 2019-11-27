@@ -78,7 +78,7 @@
 
 	<property name="failure" value="false"/>
 	<!-- target: run test -->
-	<target name="run-test" depends="build">
+	<target name="run-test" depends="build,build-test">
 		<execcolour program="${testtool}" resultproperty="testResultCode" failonerror="false">
 			<arg value="MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
 			<arg value="/InIsolation" />
