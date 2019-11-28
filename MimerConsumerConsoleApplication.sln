@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03B09307-DE64-4C4C-9C9D-3B188EEADA21}"
 	ProjectSection(SolutionItems) = preProject
 		Default.build = Default.build
+		hooks\post-commit = hooks\post-commit
 	EndProjectSection
 EndProject
 Global

@@ -49,7 +49,7 @@ namespace MimerConsumerConsoleApplication
 
             Log.Write("MimerConsumer starting...");
 
-            GetAndPrint10LatestArticles();
+			GetAndPrint10LatestArticles();
 
             GetAndPrintFrontPageEditorsSites();
 

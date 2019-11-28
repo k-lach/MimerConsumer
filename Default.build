@@ -77,7 +77,7 @@
 	</target>
 
 	<property name="failure" value="false"/>
-	<!-- target: run test -->
+	<!-- target: run test project -->
 	<target name="run-test" depends="build,build-test">
 		<execcolour program="${testtool}" resultproperty="testResultCode" failonerror="false">
 			<arg value="MimerConsumerUnitTestProject\bin\Release\MimerConsumerUnitTestProject.dll" />
@@ -93,7 +93,7 @@
 		<fail if="${failure}" message="One or more tests failed"/>
 	</target>
 
-	<!-- Create deployment package: self-extracting archives -->
+	<!-- target: create deployment package - self-extracting 7z archives -->
 	<target name="publish" depends="build,run-test">
 		<!-- Save the string fileversion to the "build.version" property -->
 		<script language="C#" prefix="util" >
