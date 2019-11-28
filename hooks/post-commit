@@ -1,0 +1,2 @@
+#!C:/Program\ Files/Git/usr/bin/sh.exe
+curl "http://localhost:8181/git/notifyCommit?url=file://C:\Users\klac\source\repos\MimerConsumer"
