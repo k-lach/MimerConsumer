@@ -33,7 +33,7 @@ namespace MimerConsumerConsoleApplication
             Log.Write("Getting front page editors sites...");
             List<Site> frontPageSites = Consumer.GetFrontPageEditorsSites();
             if (!frontPageSites.Any())
-                Log.Write("data mangler");
+                Log.Write("No data");
             else
             {
                 foreach (var s in frontPageSites.Select((value, index) => new { value, index }))
