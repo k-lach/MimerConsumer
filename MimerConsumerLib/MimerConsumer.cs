@@ -1,4 +1,5 @@
-﻿using MimerConsumerLib.DTOs;
+﻿using MimerConsumerConsoleApplication.Utils;
+using MimerConsumerLib.DTOs;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,10 @@ namespace MimerConsumerLib
             RestRequest articlesRequest = new RestRequest(ArticlesUrl, Method.GET);
             articlesRequest.AddHeader("X-Application-Name", String.Format("MimerConsumer: {0}", ApiKey));
             RestSharp.IRestResponse<ArticlesRootObject> response = Client.Execute<ArticlesRootObject>(articlesRequest);
+			if (!response.IsSuccessful)
+			{
+				Log.WriteException(Log.Level.Critical, $"GetLatestArticles() failed" ,response.ErrorException);
+			}
             ArticlesRootObject articlesRoot = response.Data;
             return articlesRoot?.data ?? new List<Article>();
         }
@@ -53,7 +58,11 @@ namespace MimerConsumerLib
             RestRequest sitesRequest = new RestRequest(SitesUrl, Method.GET);
             sitesRequest.AddHeader("X-Application-Name", String.Format("MimerConsumer: {0}", ApiKey));
             RestSharp.IRestResponse<SitesRootObject> response = Client.Execute<SitesRootObject>(sitesRequest);
-            SitesRootObject sitesRoot = response.Data;
+			if (!response.IsSuccessful)
+			{
+				Log.WriteException(Log.Level.Critical, $"GetSites() failed", response.ErrorException);
+			}
+			SitesRootObject sitesRoot = response.Data;
             return sitesRoot?.data ?? new List<Site>();
         }
 
