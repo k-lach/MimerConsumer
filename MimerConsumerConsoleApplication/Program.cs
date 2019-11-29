@@ -22,10 +22,15 @@ namespace MimerConsumerConsoleApplication
         {
             Log.Write("Getting 10 latest articles...");
             List<Article> tenLatestArticles = Consumer.GetNLatestArticles(10);
-            foreach (var a in tenLatestArticles.Select((value, index) => new { value, index }))
-            {
-                Log.Write(String.Format("Article {0}: \"{1}\"", a.index + 1, a.value.title));
-            }
+			if (!tenLatestArticles.Any())
+				Log.Write("No data");
+			else
+			{
+				foreach (var a in tenLatestArticles.Select((value, index) => new { value, index }))
+				{
+					Log.Write(String.Format("Article {0}: \"{1}\"", a.index + 1, a.value.title));
+				}
+			}
         }
 
         private static void GetAndPrintFrontPageEditorsSites()
